@@ -32,6 +32,7 @@ static void AfficheMenu(){
     cout << "4 si vous souhaitez ajouter un trajet composé (strictement plus de 2 villes)"<<endl;
     cout << "5 si vous souhaitez nous quitter :("<<endl;
     cout << "6 si vous souhaitez sauvergarder votre catalogue dans un fichier"<<endl;
+    cout << "7 si vous souhaitez charger des trajets depuis un fichier"<<endl;
     cout << "****FIN DU MENU****"<<endl;
     cout << "Votre choix :"<<endl;
     return;
@@ -158,9 +159,18 @@ int main(){
 
                 case 6:{
                     char nomfichier[100];
-                    cout << "Entrer le nom du fichier dans le quel vous voulez écrire : ";
+                    cout << "Entrer le nom du fichier dans lequel vous voulez écrire : ";
                     cin.getline(nomfichier, 100);
-                    //catalogue.Sauvegarder(nomfichier);
+                    catalogue.Sauvegarder(nomfichier);
+                    break;
+                }
+
+                case 7:{
+                    char nomfichier[100];
+                    cout << "Entrer le nom du fichier à ouvrir : ";
+                    cin.getline(nomfichier, 100);
+                    catalogue.Charger(nomfichier); 
+                    break;
                 }
 
             default:
