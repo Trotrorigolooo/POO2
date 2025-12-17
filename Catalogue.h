@@ -48,9 +48,11 @@ public:
 
     void Sauvegarder(std::string nomfichier);
     // Mode d'emploi :
-    // Ajoute un nouveau trajet à la fin du catalogue.
-    // Contrat :
-    // Le catalogue devient propriétaire du pointeur trajet.
+    // Sauvegarde dans le fichier
+
+    void Charger(std::string nomfichier);
+    // Mode d'emploi :
+    // Charge un fichier existant
 
 //-------------------------------------------- Constructeurs - destructeur
     Catalogue();

@@ -16,9 +16,12 @@ using namespace std;
 #include <string>
 #include <cstring>
 #include <fstream>
+#include <sstream>
 
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
+#include "TrajetSimple.h"
+#include "TrajetCompose.h"
 
 //----------------------------------------------------------------- PUBLIC
 
@@ -113,8 +116,7 @@ Catalogue::~Catalogue()
 
 void Catalogue::Sauvegarder(std::string nomfichier)
 // Algorithme :
-// Parcourt la liste et supprime chaque Noeud.
-// (Le destructeur de Noeud se charge de supprimer le Trajet).
+// Aucun
 {
     std::ofstream fichier;
     fichier.open(nomfichier);
@@ -124,6 +126,56 @@ void Catalogue::Sauvegarder(std::string nomfichier)
         noeud_act = noeud_act->RenvoieNoeudApres();
     }
     fichier.close();
+}
+
+void Catalogue::Charger(std::string nomfichier)
+// Algorithme :
+// Aucun
+{
+    std::ifstream fichier;
+    if (!fichier) {
+        std::cerr << "Impossible d'ouvrir le fichier\n";
+        return;
+    }
+    std::string ligne;
+    while (std::getline(fichier, ligne)) {
+        Trajet *nv_trajet;
+        std::stringstream ss(ligne);
+        std::string mot;
+
+        std::getline(ss, mot, ',');
+        const char* type = mot.c_str();
+        
+        if (strcmp(type,"0")==0){
+            std::getline(ss, mot, ',');
+            const char* dep = mot.c_str();
+            std::getline(ss, mot, ',');
+            const char* arr = mot.c_str();
+            std::getline(ss, mot, ',');
+            Trajet::MDT mdt = Trajet::MDT (std::stoi(mot));
+            nv_trajet = new TrajetSimple(dep,arr,mdt);
+        }
+        else {
+            std::getline(ss, mot, ',');
+            int nb_tr = stoi(mot.c_str())+1;
+            int i;
+            TrajetSimple** liste_trajets = new TrajetSimple*[nb_tr];
+
+            for (i=0;i<nb_tr;i++){
+                std::getline(ss, mot, ',');
+                const char* dep = mot.c_str();
+                std::getline(ss, mot, ',');
+                Trajet::MDT mdt = Trajet::MDT (std::stoi(mot));
+                std::getline(ss, mot, ',');
+                const char* arr = mot.c_str();
+                liste_trajets[i] = new TrajetSimple(dep,arr,mdt);
+            }
+            nv_trajet= new TrajetCompose((const TrajetSimple**) liste_trajets, nb_tr);
+            delete [] liste_trajets;
+            AjouterTrajet(nv_trajet);
+        }
+    }
+    return;
 }
 
 //------------------------------------------------------------------ PRIVE

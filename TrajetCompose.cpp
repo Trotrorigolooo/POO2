@@ -38,15 +38,12 @@ std::string TrajetCompose::RenvoieLigneFichier() const
 // Aucun
 {
     std::string ligne_renvoie;
-    ligne_renvoie = std::string("1")+depart+std::string(",")+arrivee+std::string(",");
+    ligne_renvoie = std::string("1")+std::string(",")+std::to_string(nb_escales)+std::string(",")+depart+std::string(",")+Mtos(mode_tr[0])+std::string(",");
     int i;
     for(i=0;i<nb_escales;i++){
-        ligne_renvoie += escales[i]+std::string(",");
+        ligne_renvoie += escales[i]+std::string(",")+Mtos(mode_tr[i+1])+std::string(",");
     }
-    for(i=0;i<nb_escales;i++){
-        ligne_renvoie += Mtos(mode_tr[i])+std::string(",");
-    }
-    ligne_renvoie += Mtos(mode_tr[i]);
+    ligne_renvoie+=arrivee+std::string(",");
     return ligne_renvoie;
 }
 
