@@ -33,6 +33,23 @@ void TrajetCompose::Afficher() const
     cout << "De " << escales[i] << " à " << arrivee << " en " << Trajet::Mtos(mode_tr[i+1]) << "\n";
 } //----- Fin de Afficher
 
+std::string TrajetCompose::RenvoieLigneFichier() const
+// Algorithme :
+// Aucun
+{
+    std::string ligne_renvoie;
+    ligne_renvoie = std::string("1")+depart+std::string(",")+arrivee+std::string(",");
+    int i;
+    for(i=0;i<nb_escales;i++){
+        ligne_renvoie += escales[i]+std::string(",");
+    }
+    for(i=0;i<nb_escales;i++){
+        ligne_renvoie += Mtos(mode_tr[i])+std::string(",");
+    }
+    ligne_renvoie += Mtos(mode_tr[i]);
+    return ligne_renvoie;
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 TrajetCompose::TrajetCompose(const TrajetSimple** liste_trajets, int nb_trajets)

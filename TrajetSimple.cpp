@@ -35,6 +35,15 @@ Trajet::MDT TrajetSimple::RenvoieMDT() const
     return mode_tr;
 } //----- Fin de RenvoieMDT
 
+std::string TrajetSimple::RenvoieLigneFichier() const
+// Algorithme :
+// Aucun
+{
+    std::string ligne_renvoie;
+    ligne_renvoie = std::string("0")+depart+std::string(",")+arrivee+std::string(",")+Mtos(mode_tr);
+    return ligne_renvoie;
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 TrajetSimple::TrajetSimple(const char* dep, const char* arr, Trajet::MDT mdt)

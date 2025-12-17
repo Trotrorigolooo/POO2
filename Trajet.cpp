@@ -58,7 +58,6 @@ const char *Trajet::RenvoieArrivee() const
     return arrivee;
 } //----- Fin de RenvoieArrivee
 
-
 //-------------------------------------------- Constructeurs - destructeur
 Trajet::Trajet(const char* dep, const char* arr)
 // Algorithme :

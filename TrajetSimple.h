@@ -33,6 +33,10 @@ public:
     // Mode d'emploi :
     // Retourne le mode de transport de ce trajet.
 
+    string RenvoieLigneFichier() const override;
+    // Mode d'emploi :
+    // Renvoie la ligne d'infos sur le trajet à écrire dans le csv
+
 //-------------------------------------------- Constructeurs - destructeur
     TrajetSimple(const char* dep, const char* arr, Trajet::MDT mdt);
     // Mode d'emploi :

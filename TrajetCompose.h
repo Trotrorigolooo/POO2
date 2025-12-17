@@ -30,6 +30,10 @@ public:
     // Mode d'emploi :
     // Affiche le détail du trajet composé étape par étape.
 
+    std::string RenvoieLigneFichier() const override;
+    // Mode d'emploi :
+    // Renvoie la ligne d'infos sur le trajet à écrire dans le csv
+
 //-------------------------------------------- Constructeurs - destructeur
     TrajetCompose(const TrajetSimple** liste_trajets, int nb_trajets);
     // Mode d'emploi :

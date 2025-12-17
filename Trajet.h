@@ -9,6 +9,7 @@
 //---------- Interface de la classe <Trajet> (fichier Trajet.h) ----------------
 #if ! defined ( TRAJET_H )
 #define TRAJET_H
+#include <string>
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -59,6 +60,8 @@ public:
     // Mode d'emploi :
     // Méthode virtuelle pure pour afficher les détails du trajet.
     // Doit être implémentée par les classes filles.
+
+    virtual std::string RenvoieLigneFichier() const = 0;
 
 //-------------------------------------------- Constructeurs - destructeur
     Trajet(const char* dep, const char* arr);
