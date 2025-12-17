@@ -12,6 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Noeud.h"
+#include <string>
 
 //------------------------------------------------------------------------
 // Rôle de la classe <Catalogue>
@@ -44,6 +45,12 @@ public:
     // Mode d'emploi :
     // Recherche avancée (implique la méthode récursive) pour trouver des
     // combinaisons de trajets.
+
+    void Sauvegarder(std::string nomfichier);
+    // Mode d'emploi :
+    // Ajoute un nouveau trajet à la fin du catalogue.
+    // Contrat :
+    // Le catalogue devient propriétaire du pointeur trajet.
 
 //-------------------------------------------- Constructeurs - destructeur
     Catalogue();

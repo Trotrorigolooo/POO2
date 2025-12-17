@@ -13,7 +13,9 @@
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
+#include <string>
 #include <cstring>
+#include <fstream>
 
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
@@ -109,6 +111,20 @@ Catalogue::~Catalogue()
     }
 } //----- Fin de ~Catalogue
 
+void Catalogue::Sauvegarder(std::string nomfichier)
+// Algorithme :
+// Parcourt la liste et supprime chaque Noeud.
+// (Le destructeur de Noeud se charge de supprimer le Trajet).
+{
+    std::ofstream fichier;
+    fichier.open(nomfichier);
+    Noeud* noeud_act = Liste;
+    while(noeud_act!=nullptr){
+        fichier << noeud_act->RenvoieTrajetCourant()->RenvoieLigneFichier()<<endl;
+        noeud_act = noeud_act->RenvoieNoeudApres();
+    }
+    fichier.close();
+}
 
 //------------------------------------------------------------------ PRIVE
 
