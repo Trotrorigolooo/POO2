@@ -40,7 +40,7 @@ std::string TrajetSimple::RenvoieLigneFichier() const
 // Aucun
 {
     std::string ligne_renvoie;
-    ligne_renvoie = std::string("0")+std::string(",")+depart+std::string(",")+arrivee+std::string(",")+Mtos(mode_tr)+std::string(",");
+    ligne_renvoie = std::string("0")+std::string(",")+depart+std::string(",")+arrivee+std::string(",")+std::to_string((int)mode_tr)+std::string(",");
     return ligne_renvoie;
 }
 

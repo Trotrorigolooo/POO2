@@ -129,53 +129,80 @@ void Catalogue::Sauvegarder(std::string nomfichier)
 }
 
 void Catalogue::Charger(std::string nomfichier)
-// Algorithme :
-// Aucun
 {
-    std::ifstream fichier;
+    // CORRECTION 1 : Ouvrir le fichier dans le constructeur
+    std::ifstream fichier(nomfichier.c_str());
+
     if (!fichier) {
         std::cerr << "Impossible d'ouvrir le fichier\n";
         return;
     }
+
     std::string ligne;
     while (std::getline(fichier, ligne)) {
-        Trajet *nv_trajet;
+        // Ignorer les lignes vides
+        if (ligne.empty()) continue;
+
         std::stringstream ss(ligne);
         std::string mot;
 
+        // Lecture du type (0 ou 1)
         std::getline(ss, mot, ',');
-        const char* type = mot.c_str();
         
-        if (strcmp(type,"0")==0){
-            std::getline(ss, mot, ',');
-            const char* dep = mot.c_str();
-            std::getline(ss, mot, ',');
-            const char* arr = mot.c_str();
-            std::getline(ss, mot, ',');
-            Trajet::MDT mdt = Trajet::MDT (std::stoi(mot));
-            nv_trajet = new TrajetSimple(dep,arr,mdt);
+        if (mot == "0") { // Trajet Simple
+            // CORRECTION 2 : Utiliser des string pour stocker les données
+            std::string depart_str, arrivee_str, mode_str;
+            
+            std::getline(ss, depart_str, ',');
+            std::getline(ss, arrivee_str, ',');
+            std::getline(ss, mode_str, ',');
+            
+            Trajet::MDT mdt = Trajet::MDT(std::stoi(mode_str));
+            
+            // On convertit en char* uniquement lors de la création
+            Trajet *nv_trajet = new TrajetSimple(depart_str.c_str(), arrivee_str.c_str(), mdt);
+            AjouterTrajet(nv_trajet);
         }
-        else {
+        else if (mot == "1") { // Trajet Compose
             std::getline(ss, mot, ',');
-            int nb_tr = stoi(mot.c_str())+1;
-            int i;
-            TrajetSimple** liste_trajets = new TrajetSimple*[nb_tr];
+            int nb_escales = std::stoi(mot);
+            int nb_trajets = nb_escales + 1;
+            
+            TrajetSimple** liste_trajets = new TrajetSimple*[nb_trajets];
+            
+            // CORRECTION 3 : Logique de lecture "en chaîne"
+            // On lit d'abord la toute première ville de départ
+            std::string ville_actuelle;
+            std::getline(ss, ville_actuelle, ','); 
 
-            for (i=0;i<nb_tr;i++){
-                std::getline(ss, mot, ',');
-                const char* dep = mot.c_str();
-                std::getline(ss, mot, ',');
-                Trajet::MDT mdt = Trajet::MDT (std::stoi(mot));
-                std::getline(ss, mot, ',');
-                const char* arr = mot.c_str();
-                liste_trajets[i] = new TrajetSimple(dep,arr,mdt);
+            for (int i = 0; i < nb_trajets; i++) {
+                std::string mode_str, ville_suivante;
+                
+                // Lecture du mode
+                std::getline(ss, mode_str, ',');
+                Trajet::MDT mdt = Trajet::MDT(std::stoi(mode_str));
+                
+                // Lecture de la ville suivante (escale ou arrivée finale)
+                std::getline(ss, ville_suivante, ',');
+
+                // Création du sous-trajet
+                liste_trajets[i] = new TrajetSimple(ville_actuelle.c_str(), ville_suivante.c_str(), mdt);
+                
+                // La ville suivante devient le départ du prochain tronçon
+                ville_actuelle = ville_suivante;
             }
-            nv_trajet= new TrajetCompose((const TrajetSimple**) liste_trajets, nb_tr);
-            delete [] liste_trajets;
+
+            Trajet *nv_trajet = new TrajetCompose((const TrajetSimple**)liste_trajets, nb_trajets);
+            
+            // Nettoyage des pointeurs temporaires (comme dans votre main)
+            for(int i = 0; i < nb_trajets; i++) {
+                delete liste_trajets[i];
+            }
+            delete[] liste_trajets;
+            
             AjouterTrajet(nv_trajet);
         }
     }
-    return;
 }
 
 //------------------------------------------------------------------ PRIVE
